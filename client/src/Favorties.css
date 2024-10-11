@@ -1,0 +1,57 @@
+/* Container for the favorites list */
+.favorites-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  padding: 20px;
+}
+
+/* Style for each individual favorite item */
+.menu-item {
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 20px;
+  width: 280px;
+  text-align: center;
+  transition: transform 0.2s ease-in-out;
+}
+
+/* Hover effect for each item */
+.menu-item:hover {
+  transform: translateY(-5px);
+}
+
+/* Image inside the item card */
+.item-image {
+  width: 100%;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+/* Title for the item */
+.item-title {
+  font-size: 20px;
+}
+
+.favorite-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+button {
+  background-color: #ff4d4d; /* Red background */
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+button:hover {
+  background-color: #ff1a1a; /* Darker red on hover */
+}

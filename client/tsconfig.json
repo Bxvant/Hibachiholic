@@ -22,6 +22,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"],
+  "include": ["src", "src/MenuItem.tsx", "src/MenuList.tsx", "src/NavBar.tsx"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

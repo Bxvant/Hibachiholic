@@ -1,0 +1,26 @@
+.nav-bar {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: #ef4d47;
+  color: white;
+}
+
+.logo {
+  height: 50px;
+}
+
+.nav-link {
+  margin: 0 15px;
+  text-decoration: none;
+  color: white;
+  font-size: 18px;
+}
+
+.cart-icon {
+  height: 35px;
+}
+
+.logoName {
+  font-size: 20px;
+}
