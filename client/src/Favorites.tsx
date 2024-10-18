@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import MenuItem from './MenuItem'; // Reuse MenuItem component
+import React, { useEffect, useState } from 'react';
+import MenuItem from './MenuItem';
 
-type FavoriteItemType = {
+type FavoriteItem = {
   favoriteId: number;
   menuItemId: number;
   name: string;
@@ -11,14 +11,14 @@ type FavoriteItemType = {
 };
 
 export default function Favorites() {
-  const [favorites, setFavorites] = useState<FavoriteItemType[]>([]);
+  const [favorites, setFavorites] = useState<FavoriteItem[]>([]);
 
   useEffect(() => {
     const fetchFavorites = async () => {
       try {
-        const response = await fetch('/api/favorites'); // Fetches favorites from the server
+        const response = await fetch('/api/favorites');
         if (!response.ok) throw new Error('Failed to fetch favorites');
-        const data: FavoriteItemType[] = await response.json();
+        const data = await response.json();
         setFavorites(data);
       } catch (error) {
         console.error('Error fetching favorites:', error);
@@ -28,50 +28,37 @@ export default function Favorites() {
     fetchFavorites();
   }, []);
 
-  const removeFavorite = async (favoriteId: number) => {
-    if (!favoriteId) {
-      console.error('Error: favoriteId is undefined or invalid');
-      return;
-    }
+  const addToCart = async (menuItemId: number, quantity: number = 1) => {
     try {
-      const response = await fetch(`/api/favorites/${favoriteId}`, {
-        method: 'DELETE',
+      const response = await fetch('/api/cart', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ menuItemId, quantity }),
       });
-      if (!response.ok) throw new Error('Failed to remove favorite');
 
-      // Update the state to remove the item from the list after deletion
-      setFavorites(favorites.filter((item) => item.favoriteId !== favoriteId));
+      if (!response.ok) throw new Error('Failed to add item to cart');
+      console.log('Item added to cart');
     } catch (error) {
-      console.error('Error removing favorite:', error);
+      console.error('Error adding item to cart:', error);
     }
   };
 
   return (
     <div className="favorites-list">
-      <h1>Your Favorites</h1>
-      {favorites.length > 0 ? (
-        favorites.map((item) => (
-          <div key={item.favoriteId} className="favorite-item">
-            <MenuItem
-              title={item.name}
-              description={item.description}
-              price={item.price}
-              imageUrl={item.imageUrl}
-              menuItemId={item.menuItemId}
-              onAddToFavorites={() => {}} // No action needed here
-            />
-            <button
-              onClick={() => {
-                removeFavorite(item.favoriteId),
-                  console.log('removed FavoriteId: ', item.favoriteId);
-              }}>
-              Remove from Favorites
-            </button>
-          </div>
-        ))
-      ) : (
-        <p>No favorites added yet.</p>
-      )}
+      <h2>Your Favorites</h2>
+      {favorites.map((item) => (
+        <div key={item.favoriteId} className="favorite-item">
+          <MenuItem
+            menuItemId={item.menuItemId}
+            title={item.name}
+            description={item.description}
+            price={item.price}
+            imageUrl={item.imageUrl}
+            onAddToFavorites={() => addToCart(item.menuItemId)}
+            onAddToCart={() => addToCart(item.menuItemId, 1)} // Add to cart handler
+          />
+        </div>
+      ))}
     </div>
   );
 }

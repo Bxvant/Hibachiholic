@@ -7,6 +7,7 @@ type MenuItemProps = {
   imageUrl: string;
   menuItemId: number;
   onAddToFavorites: (menuItemId: number) => void;
+  onAddToCart: (menuItemId: number, quantity: number) => void;
 };
 
 export default function MenuItem({
@@ -16,6 +17,7 @@ export default function MenuItem({
   imageUrl,
   menuItemId,
   onAddToFavorites,
+  onAddToCart,
 }: MenuItemProps) {
   return (
     <div className="menu-item">
@@ -27,6 +29,7 @@ export default function MenuItem({
         <button onClick={() => onAddToFavorites(menuItemId)}>
           Add to Favorites
         </button>
+        <button onClick={() => onAddToCart(menuItemId, 1)}>Add to Cart</button>
       </div>
     </div>
   );

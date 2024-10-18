@@ -17,7 +17,7 @@ export default function NavBar() {
         <Link to="/favorites" className="nav-link">
           Favorites
         </Link>
-        <a href="#" className="nav-link">
+        <a href="/cart" className="nav-link">
           <img
             src="https://cdn-icons-png.flaticon.com/512/1170/1170678.png"
             alt="Cart"

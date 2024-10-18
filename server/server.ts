@@ -123,7 +123,7 @@ app.get('/api/favorites', async (req, res, next) => {
   try {
     const userId = 1;
     const sql = `
-      SELECT "menuItems".*
+      SELECT *
       FROM "favorites"
       JOIN "menuItems" ON "favorites"."menuItemId" = "menuItems"."menuItemId"
       WHERE "favorites"."userId" = $1
@@ -137,7 +137,6 @@ app.get('/api/favorites', async (req, res, next) => {
 });
 
 // ROUTE THAT IS USED FOR DELETING A MENU ITEM THINGY FROM THE FAVS PAGE
-// wat does parseInt do?
 app.delete(`/api/favorites/:favoriteId`, async (req, res, next) => {
   const favoriteId = req.params.favoriteId;
 
@@ -157,8 +156,6 @@ app.delete(`/api/favorites/:favoriteId`, async (req, res, next) => {
     if (result.rowCount === 0) {
       return res.status(404).json({ error: 'Favorite not found' });
     }
-
-    // Successful deletion
     res.status(204).send();
   } catch (err) {
     next(err);
@@ -168,15 +165,40 @@ app.delete(`/api/favorites/:favoriteId`, async (req, res, next) => {
 app.post('/api/cart', async (req, res, next) => {
   try {
     const { menuItemId, quantity } = req.body;
-    const userId = 1; // will have to change once i implement user management
-    const sql = `
-      INSERT INTO "cart" ("userId", "menuItemId", "quantity")
-      VALUES ($1, $2, $3)
-      RETURNING "cartId", "userId", "menuItemId", "quantity"
+    const userId = 1; // will have to replace once user manaegment is implemented
+
+    // Check if the item already exists in the cart
+    const checkSql = `
+      SELECT "cartId", "quantity"
+      FROM "cart"
+      WHERE "userId" = $1 AND "menuItemId" = $2
     `;
-    const params = [userId, menuItemId, quantity];
-    const result = await db.query(sql, params);
-    res.status(201).json(result.rows[0]);
+    const checkParams = [userId, menuItemId];
+    const existingItem = await db.query(checkSql, checkParams);
+
+    if (existingItem.rows.length > 0) {
+      // If the item exists, update its quantity
+      const newQuantity = existingItem.rows[0].quantity + quantity;
+      const updateSql = `
+        UPDATE "cart"
+        SET "quantity" = $1
+        WHERE "cartId" = $2
+        RETURNING "cartId", "menuItemId", "quantity"
+      `;
+      const updateParams = [newQuantity, existingItem.rows[0].cartId];
+      const result = await db.query(updateSql, updateParams);
+      res.json(result.rows[0]);
+    } else {
+      // If the item doesn't exist, insert it as a new row
+      const insertSql = `
+        INSERT INTO "cart" ("userId", "menuItemId", "quantity")
+        VALUES ($1, $2, $3)
+        RETURNING "cartId", "menuItemId", "quantity"
+      `;
+      const insertParams = [userId, menuItemId, quantity];
+      const result = await db.query(insertSql, insertParams);
+      res.status(201).json(result.rows[0]);
+    }
   } catch (err) {
     next(err);
   }

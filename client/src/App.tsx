@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import NavBar from './NavBar';
 import MenuList from './MenuList';
 import Favorites from './Favorites'; // Import the Favorites component
+import Cart from './Cart';
 import './App.css';
 
 export default function App() {
@@ -13,6 +14,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<MenuList />} />
           <Route path="/favorites" element={<Favorites />} />{' '}
+          <Route path="/cart" element={<Cart />} /> {/* New Cart Route */}
         </Routes>
       </div>
     </Router>

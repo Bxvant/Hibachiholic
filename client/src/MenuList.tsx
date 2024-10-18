@@ -44,6 +44,20 @@ export default function MenuList() {
     }
   };
 
+  const handleAddToCart = async (menuItemId: number) => {
+    try {
+      const response = await fetch('/api/cart', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ menuItemId, quantity: 1 }),
+      });
+      if (!response.ok) throw new Error('Failed to add to cart');
+      alert('Item added to cart!');
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+    }
+  };
+
   return (
     <div className="menu-list">
       {menuItems.map((item) => (
@@ -55,6 +69,7 @@ export default function MenuList() {
           imageUrl={item.imageUrl}
           menuItemId={item.menuItemId}
           onAddToFavorites={handleAddToFavorites}
+          onAddToCart={handleAddToCart}
         />
       ))}
     </div>
