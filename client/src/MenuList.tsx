@@ -35,7 +35,7 @@ export default function MenuList() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ menuItemId }), // Pass the menuItemId to save
+        body: JSON.stringify({ menuItemId }),
       });
       if (!response.ok) throw new Error('Failed to add to favorites');
       alert('Item added to favorites!');

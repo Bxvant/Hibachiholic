@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import MenuItem from './MenuItem';
 
 type FavoriteItem = {
@@ -43,6 +43,23 @@ export default function Favorites() {
     }
   };
 
+  const removeFromFavorites = async (favoriteId: number) => {
+    try {
+      const response = await fetch(`/api/favorites/${favoriteId}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) throw new Error('Failed to remove favorite');
+
+      setFavorites((prevFavorites) =>
+        prevFavorites.filter((item) => item.favoriteId !== favoriteId)
+      );
+      console.log('Item removed from favorites');
+    } catch (error) {
+      console.error('Error removing item from favorites:', error);
+    }
+  };
+
   return (
     <div className="favorites-list">
       <h2>Your Favorites</h2>
@@ -55,8 +72,11 @@ export default function Favorites() {
             price={item.price}
             imageUrl={item.imageUrl}
             onAddToFavorites={() => addToCart(item.menuItemId)}
-            onAddToCart={() => addToCart(item.menuItemId, 1)} // Add to cart handler
+            onAddToCart={() => addToCart(item.menuItemId, 1)}
           />
+          <button onClick={() => removeFromFavorites(item.favoriteId)}>
+            Remove from Favorites
+          </button>
         </div>
       ))}
     </div>

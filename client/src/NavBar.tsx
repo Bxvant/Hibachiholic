@@ -4,12 +4,10 @@ import './NavBar.css';
 export default function NavBar() {
   return (
     <nav className="nav-bar">
-      {/* Logo on the left */}
       <div className="nav-left">
         <p className="logoName">HibachiHolic</p>
       </div>
 
-      {/* Links on the right */}
       <div className="nav-right">
         <Link to="/" className="nav-link">
           Menu

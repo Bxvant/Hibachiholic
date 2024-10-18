@@ -51,7 +51,7 @@ export default function Cart() {
   };
 
   const handleQuantityChange = async (cartId: number, quantity: number) => {
-    if (quantity < 1) return; // Prevent quantity from being zero or negative
+    if (quantity < 1) return;
 
     try {
       const response = await fetch(`/api/cart/${cartId}`, {

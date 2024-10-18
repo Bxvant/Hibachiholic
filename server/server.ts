@@ -152,7 +152,6 @@ app.delete(`/api/favorites/:favoriteId`, async (req, res, next) => {
     const params = [favoriteId];
     const result = await db.query(sql, params);
 
-    // If no rows were affected, return a 404
     if (result.rowCount === 0) {
       return res.status(404).json({ error: 'Favorite not found' });
     }
@@ -189,7 +188,6 @@ app.post('/api/cart', async (req, res, next) => {
       const result = await db.query(updateSql, updateParams);
       res.json(result.rows[0]);
     } else {
-      // If the item doesn't exist, insert it as a new row
       const insertSql = `
         INSERT INTO "cart" ("userId", "menuItemId", "quantity")
         VALUES ($1, $2, $3)
