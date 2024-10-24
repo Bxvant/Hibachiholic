@@ -220,6 +220,21 @@ app.get('/api/cart', async (req, res, next) => {
   }
 });
 
+app.delete('/api/cart', async (req, res, next) => {
+  try {
+    const userId = 1; // Replace with actual userId from authenticated user
+    const sql = `
+      DELETE FROM "cart"
+      WHERE "userId" = $1
+    `;
+    const params = [userId];
+    await db.query(sql, params);
+    res.status(204).send();
+  } catch (err) {
+    next(err);
+  }
+});
+
 // Updates item quantity in cart
 app.put('/api/cart/:cartId', async (req, res, next) => {
   try {

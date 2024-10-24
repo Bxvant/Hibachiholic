@@ -61,3 +61,17 @@
 .remove-button {
   background-color: #ff4;
 }
+
+.checkout-button {
+  margin-top: 20px;
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.checkout-button:hover {
+  background-color: #0056b3; /* Darker shade for hover */
+}

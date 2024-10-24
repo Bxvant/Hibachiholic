@@ -76,6 +76,22 @@ export default function Cart() {
     }
   };
 
+  //function to handle checkout
+  const handleCheckout = async () => {
+    try {
+      const response = await fetch('/api/cart', {
+        method: 'DELETE',
+      });
+      if (!response.ok) throw new Error('Failed to clear cart');
+
+      setCartItems([]);
+      setTotalPrice(0);
+      console.log('Cart cleared');
+    } catch (error) {
+      console.error('Error clearing cart:', error);
+    }
+  };
+
   return (
     <div className="cart">
       <h2>Your Cart</h2>
@@ -122,6 +138,9 @@ export default function Cart() {
       {cartItems.length > 0 && (
         <div className="cart-total">
           <h3>Total Price: ${totalPrice.toFixed(2)}</h3>
+          <button onClick={handleCheckout} className="checkout-button">
+            Checkout
+          </button>
         </div>
       )}
     </div>
